@@ -19,7 +19,7 @@ import { MicrofrontendConfig } from './microfrontend.config';
           referrerpolicy="strict-origin-when-cross-origin"
         ></iframe>
       } @else {
-        <p>Micro-frontend URL is not configured yet.</p>
+        <p>Set AYS_MFA_ACCOUNT_URL in DigitalOcean app environment variables.</p>
       }
     </section>
   `,
@@ -49,7 +49,7 @@ export class MicrofrontendFrameComponent {
 
   private getSafeUrl(): SafeResourceUrl | null {
     const config = this.route.snapshot.data['mfe'] as MicrofrontendConfig | undefined;
-    if (!config?.remoteUrl || config.remoteUrl.includes('example.com')) {
+    if (!config?.remoteUrl) {
       return null;
     }
 

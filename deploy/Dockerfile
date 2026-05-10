@@ -14,6 +14,10 @@ WORKDIR /usr/share/nginx/html
 # SPA-friendly Nginx config
 COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
 
+# Generate runtime app config from environment variables.
+COPY deploy/40-generate-app-config.sh /docker-entrypoint.d/40-generate-app-config.sh
+RUN chmod +x /docker-entrypoint.d/40-generate-app-config.sh
+
 # Angular application output (Angular application builder emits /browser)
 COPY --from=build /app/dist/ays-shl-account-management/browser ./
 
