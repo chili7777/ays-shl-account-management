@@ -14,10 +14,10 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render shell content', async () => {
+  it('should render router outlet host', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.shell')?.textContent).toContain('shell');
+    expect(compiled.querySelector('router-outlet')).toBeTruthy();
   });
 });
