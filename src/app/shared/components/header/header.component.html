@@ -1,0 +1,48 @@
+<header class="header">
+  <nav class="header__nav">
+    <div class="header__left">
+      <button class="header__btn header__toggle material-icons" (click)="onToggleSidebar()">
+        menu
+      </button>
+      <a href="/" class="header__logo">
+        <div class="logo-icon">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 21h18" />
+            <path d="M3 10h18" />
+            <path d="M5 6l7-3 7 3" />
+            <path d="M4 10v11" />
+            <path d="M20 10v11" />
+          </svg>
+        </div>
+        <span class="header__logo-text">NeoBank</span>
+      </a>
+    </div>
+
+    <div class="header__right">
+      <div class="header__profile">
+        <div class="avatar">
+          <span class="avatar__text">{{ username.charAt(0) || 'U' }}</span>
+        </div>
+        <span class="header__username hidden-mobile">
+          {{ username }}
+        </span>
+      </div>
+
+      <div class="header__divider"></div>
+
+      <button class="header__btn header__logout" (click)="logoutAccount()" title="Cerrar sesión">
+        <span class="material-icons">logout</span>
+        <span class="hidden-mobile">Salir</span>
+      </button>
+    </div>
+  </nav>
+</header>

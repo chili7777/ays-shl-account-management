@@ -1,0 +1,32 @@
+@import "../../../../assets/scss/variables";
+
+.footer {
+  width: 100%;
+  padding: 24px;
+  background-color: $dark-bg;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+  @media (min-width: 768px) {
+    position: fixed;
+    bottom: 20px;
+    left: 24px;
+    right: 24px;
+    width: auto;
+    border-radius: 20px;
+    border-top: none;
+    box-shadow: $skeuo-shadow-out;
+    padding: 12px 24px;
+    z-index: 1000;
+  }
+
+  &__text {
+    color: $dark-text-secondary;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+}

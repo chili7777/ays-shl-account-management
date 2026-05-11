@@ -9,7 +9,7 @@ import { MicrofrontendConfig } from './microfrontend.config';
   standalone: true,
   template: `
     <section class="mfe-container">
-      <h1>shell</h1>
+      <h1>Módulo de Cuentas</h1>
       @if (remoteUrl) {
         <iframe
           class="mfe-frame"
@@ -27,17 +27,19 @@ import { MicrofrontendConfig } from './microfrontend.config';
     .mfe-container {
       display: grid;
       gap: 1rem;
-      min-height: 100vh;
+      min-height: calc(100vh - 120px);
       padding: 1rem;
       box-sizing: border-box;
+      color: #e0e0e0;
     }
 
     .mfe-frame {
       width: 100%;
-      min-height: calc(100vh - 6rem);
+      min-height: calc(100vh - 200px);
       border: 0;
-      border-radius: 0.5rem;
-      background: #fff;
+      border-radius: 1rem;
+      background: #1e1e26;
+      box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.4), inset -4px -4px 8px rgba(255, 255, 255, 0.04);
     }
   `
 })
