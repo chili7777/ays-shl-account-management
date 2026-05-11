@@ -22,6 +22,14 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+
+    &--centered {
+      justify-content: center;
+
+      .header__logo-text {
+        display: inline-block !important;
+      }
+    }
   }
 
   &__left {

@@ -1,9 +1,11 @@
 <header class="header">
-  <nav class="header__nav">
+  <nav class="header__nav" [class.header__nav--centered]="!isLoggedIn">
     <div class="header__left">
-      <button class="header__btn header__toggle material-icons" (click)="onToggleSidebar()">
-        menu
-      </button>
+      @if (isLoggedIn) {
+        <button class="header__btn header__toggle material-icons" (click)="onToggleSidebar()">
+          menu
+        </button>
+      }
       <a href="/" class="header__logo">
         <div class="logo-icon">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -14,22 +16,24 @@
       </a>
     </div>
 
-    <div class="header__right">
-      <div class="header__profile">
-        <div class="avatar">
-          <span class="avatar__text">{{ username.charAt(0) || 'U' }}</span>
+    @if (isLoggedIn) {
+      <div class="header__right">
+        <div class="header__profile">
+          <div class="avatar">
+            <span class="avatar__text">{{ username.charAt(0) || 'U' }}</span>
+          </div>
+          <span class="header__username hidden-mobile">
+            {{ username }}
+          </span>
         </div>
-        <span class="header__username hidden-mobile">
-          {{ username }}
-        </span>
+
+        <div class="header__divider"></div>
+
+        <button class="header__btn header__logout" (click)="logoutAccount()" title="Cerrar sesión">
+          <span class="material-icons">logout</span>
+          <span class="hidden-mobile">Salir</span>
+        </button>
       </div>
-
-      <div class="header__divider"></div>
-
-      <button class="header__btn header__logout" (click)="logoutAccount()" title="Cerrar sesión">
-        <span class="material-icons">logout</span>
-        <span class="hidden-mobile">Salir</span>
-      </button>
-    </div>
+    }
   </nav>
 </header>

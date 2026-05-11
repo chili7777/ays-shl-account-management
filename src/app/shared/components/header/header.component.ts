@@ -12,8 +12,11 @@ export class HeaderComponent {
   @Input() username: string = "Usuario Genérico";
   @Output() toggleSidebar = new EventEmitter<void>();
 
+  isLoggedIn: boolean = false;
+
   logoutAccount() {
-    console.log("Cerrar sesión clickeado");
+    this.isLoggedIn = false;
+    console.log("Sesión cerrada");
   }
 
   onToggleSidebar() {
