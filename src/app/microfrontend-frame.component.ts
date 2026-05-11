@@ -30,16 +30,16 @@ import { MicrofrontendConfig } from './microfrontend.config';
       min-height: calc(100vh - 120px);
       padding: 1rem;
       box-sizing: border-box;
-      color: #e0e0e0;
+      color: #eaecef;
     }
 
     .mfe-frame {
       width: 100%;
       min-height: calc(100vh - 200px);
-      border: 0;
-      border-radius: 1rem;
-      background: #1e1e26;
-      box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.4), inset -4px -4px 8px rgba(255, 255, 255, 0.04);
+      border: 1px solid #2b3139;
+      border-radius: 8px;
+      background: #1e2329;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
   `
 })

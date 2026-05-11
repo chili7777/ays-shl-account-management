@@ -1,19 +1,20 @@
 @import "../../../../assets/scss/variables";
 
 .header {
-  background-color: $dark-bg;
-  height: 80px;
+  background-color: $theme-dark-bg;
+  height: 64px;
   z-index: 1000;
   display: flex;
   align-items: center;
-  padding: 0 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0 16px;
+  border-bottom: 1px solid $theme-dark-border;
 
   @media (min-width: 768px) {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    padding: 0 24px;
   }
 
   &__nav {
@@ -26,36 +27,29 @@
   &__left {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
   }
 
   &__btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: $dark-surface;
+    background: transparent;
     border: none;
-    color: $dark-text-secondary;
+    color: $theme-dark-text-secondary;
     cursor: pointer;
-    border-radius: 12px;
-    box-shadow: $skeuo-shadow-small;
-    transition: all 0.3s ease;
+    border-radius: 4px;
+    transition: all 0.2s ease;
 
     &:hover {
-      color: $dark-accent;
-      box-shadow: $skeuo-shadow-out;
-      transform: translateY(-1px);
-    }
-
-    &:active {
-      box-shadow: $skeuo-shadow-in;
-      transform: translateY(0);
+      color: $theme-dark-accent;
+      background-color: $theme-dark-surface-hover;
     }
   }
 
   &__toggle {
-    width: 44px;
-    height: 44px;
+    width: 32px;
+    height: 32px;
     font-size: 24px;
 
     @media (min-width: 768px) {
@@ -67,26 +61,28 @@
     display: flex;
     align-items: center;
     text-decoration: none;
-    gap: 12px;
+    gap: 8px;
 
     .logo-icon {
-      width: 40px;
-      height: 40px;
+      width: 32px;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: $dark-surface;
-      border-radius: 10px;
-      box-shadow: $skeuo-shadow-small;
-      color: $dark-accent;
+      color: $theme-dark-accent;
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
     }
   }
 
   &__logo-text {
-    font-size: 20px;
-    font-weight: 700;
-    color: $dark-text-primary;
-    letter-spacing: 0.5px;
+    font-size: 18px;
+    font-weight: 600;
+    color: $theme-dark-text-primary;
+    letter-spacing: -0.5px;
 
     @media (max-width: 480px) {
       display: none;
@@ -96,36 +92,45 @@
   &__right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
   }
 
   &__profile {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 6px 12px;
-    background: $dark-surface;
-    border-radius: 30px;
-    box-shadow: $skeuo-shadow-small;
+    gap: 8px;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: $theme-dark-surface-hover;
+    }
   }
 
   &__username {
-    color: $dark-text-primary;
-    font-size: 14px;
-    font-weight: 600;
+    color: $theme-dark-text-primary;
+    font-size: 13px;
+    font-weight: 500;
   }
 
   &__divider {
     width: 1px;
-    height: 24px;
-    background-color: rgba(255, 255, 255, 0.1);
+    height: 16px;
+    background-color: $theme-dark-border;
   }
 
   &__logout {
-    padding: 8px 16px;
-    gap: 8px;
-    font-size: 14px;
-    font-weight: 600;
+    padding: 6px 12px;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid transparent;
+
+    &:hover {
+      border-color: $theme-dark-accent;
+      color: $theme-dark-accent;
+    }
 
     .material-icons {
       font-size: 18px;
@@ -134,19 +139,19 @@
 }
 
 .avatar {
-  width: 32px;
-  height: 32px;
-  background: linear-gradient(135deg, $dark-accent, $dark-accent-secondary);
+  width: 24px;
+  height: 24px;
+  background-color: $theme-dark-surface-hover;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $white;
-  box-shadow: 0 4px 10px rgba(0, 210, 255, 0.3);
+  color: $theme-dark-text-primary;
+  border: 1px solid $theme-dark-border;
 
   &__text {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: 600;
   }
 }
 
