@@ -12,7 +12,7 @@ export class HeaderComponent {
   @Input() username: string = "Usuario Genérico";
   @Output() toggleSidebar = new EventEmitter<void>();
 
-  isLoggedIn: boolean = false;
+  isLoggedIn: boolean = true; // Simulado para visualización
 
   logoutAccount() {
     this.isLoggedIn = false;

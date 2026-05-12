@@ -1,21 +1,21 @@
 import { Routes } from '@angular/router';
 
 import { MicrofrontendFrameComponent } from './microfrontend-frame.component';
-import { AYS_MFA_ACCOUNT_CONFIG } from './microfrontend.config';
+import { MICROFRONTENDS } from './microfrontend.config';
 
 export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: AYS_MFA_ACCOUNT_CONFIG.routePath,
+    redirectTo: MICROFRONTENDS[0].routePath,
   },
-  {
-    path: AYS_MFA_ACCOUNT_CONFIG.routePath,
+  ...MICROFRONTENDS.map(mfe => ({
+    path: mfe.routePath,
     component: MicrofrontendFrameComponent,
-    data: { mfe: AYS_MFA_ACCOUNT_CONFIG },
-  },
+    data: { mfe },
+  })),
   {
     path: '**',
-    redirectTo: AYS_MFA_ACCOUNT_CONFIG.routePath,
+    redirectTo: MICROFRONTENDS[0].routePath,
   },
 ];

@@ -1,5 +1,35 @@
-<app-header (toggleSidebar)="onToggleSidebar()"></app-header>
-<main class="main-content">
-  <router-outlet />
-</main>
-<app-footer></app-footer>
+<div class="app-container" [class.sidebar-open]="isSidebarOpen()">
+  <aside class="sidebar">
+    <div class="sidebar__header">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z" fill="currentColor"/>
+        </svg>
+      </div>
+      <span class="sidebar__logo-text">Bank</span>
+    </div>
+    <nav class="sidebar__nav">
+      @for (mfe of mfes; track mfe.name) {
+        <a [routerLink]="['/' + mfe.routePath]"
+           routerLinkActive="active"
+           class="sidebar__link"
+           (click)="closeSidebar()">
+          <span class="material-icons">{{ mfe.icon }}</span>
+          <span class="sidebar__link-text">{{ mfe.label }}</span>
+        </a>
+      }
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+    <app-header (toggleSidebar)="toggleSidebar()"></app-header>
+
+    <main class="main-content">
+      <router-outlet />
+    </main>
+
+    <app-footer [mfes]="mfes"></app-footer>
+  </div>
+
+  <div class="sidebar-overlay" (click)="closeSidebar()"></div>
+</div>

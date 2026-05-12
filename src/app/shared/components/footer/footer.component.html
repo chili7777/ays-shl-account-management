@@ -1,7 +1,20 @@
 <footer class="footer">
+  <!-- Mobile Bottom Navigation -->
+  <nav class="footer__mobile-nav">
+    @for (mfe of mfes; track mfe.name) {
+      <a [routerLink]="['/' + mfe.routePath]"
+         routerLinkActive="active"
+         class="footer__nav-link">
+        <span class="material-icons">{{ mfe.icon }}</span>
+        <span class="footer__nav-label">{{ mfe.label }}</span>
+      </a>
+    }
+  </nav>
+
+  <!-- Desktop Footer Info -->
   <div class="footer__content">
     <p class="footer__text">
-      <strong>Bank</strong> &copy; {{ now | date : "yyyy" }} &bull; Soluciones Digitales de Pruebas
+      <strong>Bank</strong> &copy; {{ now | date : "yyyy" }} &bull; Soluciones Digitales
     </p>
   </div>
 </footer>

@@ -9,37 +9,57 @@ import { MicrofrontendConfig } from './microfrontend.config';
   standalone: true,
   template: `
     <section class="mfe-container">
-      <h1>Módulo de Cuentas</h1>
       @if (remoteUrl) {
         <iframe
           class="mfe-frame"
           [src]="remoteUrl"
-          title="ays-mfa-account"
+          [title]="mfeName"
           loading="lazy"
           referrerpolicy="strict-origin-when-cross-origin"
         ></iframe>
       } @else {
-        <p>Set AYS_MFA_ACCOUNT_URL in DigitalOcean app environment variables.</p>
+        <div class="mfe-error">
+          <span class="material-icons">error_outline</span>
+          <p>La URL para {{ mfeLabel }} no está configurada.</p>
+        </div>
       }
     </section>
   `,
   styles: `
     .mfe-container {
-      display: grid;
-      gap: 1rem;
-      min-height: calc(100vh - 120px);
-      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
       box-sizing: border-box;
-      color: #eaecef;
+      background: transparent;
     }
 
     .mfe-frame {
       width: 100%;
-      min-height: calc(100vh - 200px);
-      border: 1px solid #2b3139;
-      border-radius: 8px;
-      background: #1e2329;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      height: calc(100vh - 120px);
+      border: none;
+      background: transparent;
+    }
+
+    .mfe-error {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #90949c;
+      gap: 1rem;
+
+      .material-icons {
+        font-size: 3rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .mfe-frame {
+        height: calc(100vh - 140px); // Ajuste para barra inferior
+      }
     }
   `
 })
@@ -47,11 +67,18 @@ export class MicrofrontendFrameComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly sanitizer = inject(DomSanitizer);
 
+  mfeName = '';
+  mfeLabel = '';
   readonly remoteUrl: SafeResourceUrl | null = this.getSafeUrl();
 
   private getSafeUrl(): SafeResourceUrl | null {
     const config = this.route.snapshot.data['mfe'] as MicrofrontendConfig | undefined;
-    if (!config?.remoteUrl) {
+    if (!config) return null;
+
+    this.mfeName = config.name;
+    this.mfeLabel = config.label;
+
+    if (!config.remoteUrl) {
       return null;
     }
 
