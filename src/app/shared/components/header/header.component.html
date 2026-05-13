@@ -1,0 +1,29 @@
+<header class="header">
+  <div class="header__left">
+    <button class="header__toggle material-icons" (click)="onToggleSidebar()">
+      menu
+    </button>
+    <div class="header__mobile-logo">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z" fill="currentColor"/>
+      </svg>
+      <span>Bank</span>
+    </div>
+  </div>
+
+  <div class="header__right">
+    <div class="header__profile" (click)="goToProfile()" style="cursor: pointer;" title="Ir a mi perfil">
+      <div class="header__info">
+        <span class="header__username">{{ username }}</span>
+        <span class="header__role">{{ userRole }}</span>
+      </div>
+      <div class="avatar">
+        {{ username.trim().charAt(0).toUpperCase() }}
+      </div>
+    </div>
+
+    <button class="header__logout" (click)="logoutAccount()" title="Cerrar sesión">
+      <span class="material-icons">logout</span>
+    </button>
+  </div>
+</header>

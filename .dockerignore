@@ -1,0 +1,24 @@
+# Git and IDE
+.git
+.gitignore
+.idea
+.vscode
+
+# Node artifacts
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build artifacts
+.angular
+coverage
+dist
+
+# Project docs and local files
+custom-instructions
+example-deploy
+serve.out.txt
+serve.err.txt
+README.md

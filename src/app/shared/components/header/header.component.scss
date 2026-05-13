@@ -1,0 +1,126 @@
+@use "../../../../assets/scss/variables" as *;
+
+.header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background-color: transparent;
+  z-index: 100;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__toggle {
+    background: transparent;
+    border: none;
+    color: $theme-dark-text-primary;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background 0.2s;
+
+    &:hover {
+      background-color: $theme-dark-surface-hover;
+    }
+
+    @media (min-width: 1025px) {
+      display: none; // Hidden when sidebar is always visible
+    }
+
+    @media (max-width: 768px) {
+      display: none; // Hidden on mobile, using bottom bar for navigation
+    }
+  }
+
+  &__mobile-logo {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    color: $theme-dark-text-primary;
+    font-weight: bold;
+    font-size: 1.2rem;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      color: $theme-dark-accent;
+    }
+
+    @media (max-width: 1024px) {
+      display: flex;
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .header__info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+
+      @media (max-width: 480px) {
+        display: none;
+      }
+    }
+
+    .header__username {
+      font-size: 0.9rem;
+      color: $theme-dark-text-primary;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .header__role {
+      font-size: 0.7rem;
+      color: $theme-dark-text-secondary;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      background-color: $theme-dark-accent;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+  }
+
+  &__logout {
+    background: transparent;
+    border: none;
+    color: $theme-dark-text-secondary;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: rgba($red, 0.1);
+      color: $red;
+    }
+
+    .material-icons {
+      font-size: 20px;
+    }
+  }
+}
