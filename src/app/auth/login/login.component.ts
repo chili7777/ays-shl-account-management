@@ -39,7 +39,7 @@ export class LoginComponent {
             this.router.navigate(['/clients']);
           } else {
             // Si no es ADMIN, redirigir a cuentas filtradas por cliente
-            this.router.navigate(['/accounts'], { queryParams: { clientId } });
+            this.router.navigate(['/accounts'], { queryParams: { client: clientId } });
           }
         },
         error: (err: HttpErrorResponse) => {

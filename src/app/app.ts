@@ -19,12 +19,17 @@ export class App {
   isSidebarOpen = signal(false);
 
   get mfes() {
-    const role = this.authService.userRole();
+    const role = (this.authService.userRole() || 'USER').toString().toUpperCase();
     if (role === 'ADMIN') {
       return MICROFRONTENDS;
     }
-    // Por defecto para USER o si no hay rol, ocultar Clientes
-    return MICROFRONTENDS.filter(mfe => mfe.routePath !== 'clients');
+
+    return MICROFRONTENDS.map(mfe => {
+      if (mfe.routePath === 'clients') {
+        return { ...mfe, label: 'Mi Perfil' };
+      }
+      return mfe;
+    });
   }
 
   toggleSidebar() {
@@ -36,9 +41,12 @@ export class App {
   }
 
   getQueryParams(mfe: any) {
-    const role = this.authService.userRole();
-    if (mfe.routePath === 'accounts' && role !== 'ADMIN') {
-      return { clientId: this.authService.getClientId() };
+    const role = (this.authService.userRole() || 'USER').toString().toUpperCase();
+    if (role !== 'ADMIN') {
+      const clientId = this.authService.getClientId();
+      if (mfe.routePath === 'accounts' || mfe.routePath === 'clients' || mfe.routePath === 'movements') {
+        return { client: clientId };
+      }
     }
     return {};
   }

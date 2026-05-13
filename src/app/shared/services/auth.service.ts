@@ -36,13 +36,18 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, { identification: clientId, password }, { headers: this.getHeaders(true) })
       .pipe(
         tap((response: any) => {
-          localStorage.setItem('clientId', clientId);
+          // El usuario insiste en que se use el UUID para todas las operaciones.
+          // Intentamos extraer el UUID de varias posibles ubicaciones en la respuesta.
+          const data = response.data || response.customer || response;
+          const storedId = data.uuid || data.customerId || data.idCustomer || data._id || data.id || clientId;
+          const role = (response.role || data.role || 'USER').toString().trim().toUpperCase();
+
+          localStorage.setItem('clientId', storedId);
+          localStorage.setItem('userRole', role);
+          this._userRole.set(role);
+
           if (response && (response.name || response.fullName)) {
             localStorage.setItem('userName', response.name || response.fullName);
-          }
-          if (response && response.role) {
-            localStorage.setItem('userRole', response.role);
-            this._userRole.set(response.role);
           }
           this._isLoggedIn.set(true);
         }),

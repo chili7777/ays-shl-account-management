@@ -60,6 +60,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 5000
+          },
           "configurations": {
             "production": {
               "buildTarget": "ays-shl-account-management:build:production"
