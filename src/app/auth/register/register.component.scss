@@ -1,7 +1,7 @@
 @use "sass:color";
 
 $theme-dark-bg: #0b0e11;
-$theme-dark-surface: #1e2329;
+$theme-dark-surface: rgba(30, 35, 41, 0.85);
 $theme-dark-text-primary: #eaecef;
 $theme-dark-text-secondary: #848e9c;
 $theme-dark-accent: #005ce6;
@@ -33,6 +33,8 @@ $theme-dark-success: #00c076;
   max-width: 600px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   margin: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .register-header {
