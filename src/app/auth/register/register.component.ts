@@ -72,6 +72,7 @@ export class RegisterComponent {
   isLoading = false;
   successMessage = '';
   errorMessage = '';
+  fieldErrors: { [key: string]: string } = {};
 
   constructor() {
     this.registerForm = this.fb.group({
@@ -85,6 +86,20 @@ export class RegisterComponent {
       status: [true],
       role: ['USER'],
       password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+
+    // Limpiar errores de servidor cuando el usuario modifique el campo
+    Object.keys(this.registerForm.controls).forEach(key => {
+      this.registerForm.get(key)?.valueChanges.subscribe(() => {
+        if (this.fieldErrors[key]) {
+          delete this.fieldErrors[key];
+          const control = this.registerForm.get(key);
+          if (control?.hasError('serverError')) {
+            control.setErrors(null);
+            control.updateValueAndValidity({ emitEvent: false });
+          }
+        }
+      });
     });
   }
 
@@ -143,6 +158,7 @@ export class RegisterComponent {
     this.isLoading = true;
     this.errorMessage = '';
     this.successMessage = '';
+    this.fieldErrors = {};
 
     this.authService.register(this.registerForm.value).subscribe({
       next: () => {
@@ -153,8 +169,23 @@ export class RegisterComponent {
         }, 2000);
       },
       error: (err: any) => {
-        this.errorMessage = err.error?.message || 'Error al crear la cuenta. Intente nuevamente.';
+        const errorData = err.error;
+        this.errorMessage = errorData?.detail || 'Error al crear la cuenta. Intente nuevamente.';
         this.isLoading = false;
+
+        if (errorData?.errors && Array.isArray(errorData.errors)) {
+          errorData.errors.forEach((e: any) => {
+            // El formato es "campo: descripción técnica"
+            const parts = e.message.split(':');
+            const field = parts[0].trim().toLowerCase();
+            const message = e.businessMessage || parts[1]?.trim() || e.message;
+
+            if (this.registerForm.contains(field)) {
+              this.fieldErrors[field] = message;
+              this.registerForm.get(field)?.setErrors({ serverError: true });
+            }
+          });
+        }
       }
     });
   }
