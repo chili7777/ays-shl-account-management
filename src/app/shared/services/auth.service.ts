@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -28,8 +28,6 @@ export class AuthService {
   }
 
   login(clientId: string, password: string): Observable<any> {
-    // Intentar login. Si no existe el endpoint /login, puede que falle.
-    // Según requerimiento: "El Login debe llamar al backend para validar si los datos coinciden"
     return this.http.post(`${this.apiUrl}/login`, { identification: clientId, password }, { headers: this.getHeaders(true) })
       .pipe(
         tap((response: any) => {
@@ -38,6 +36,9 @@ export class AuthService {
             localStorage.setItem('userName', response.name || response.fullName);
           }
           this._isLoggedIn.set(true);
+        }),
+        catchError(err => {
+          return throwError(() => err);
         })
       );
   }

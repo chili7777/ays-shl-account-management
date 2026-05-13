@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -19,6 +20,7 @@ export class LoginComponent {
 
   private authService = inject(AuthService);
   private router = inject(Router);
+  private cdRef = inject(ChangeDetectorRef);
 
   onSubmit() {
     if (!this.clientId || !this.password) return;
@@ -26,24 +28,32 @@ export class LoginComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.login(this.clientId, this.password).subscribe({
-      next: () => {
-        this.router.navigate(['/accounts']);
-      },
-      error: (err) => {
-        console.error('Error de autenticación:', err);
-        this.isLoading = false;
+    this.authService.login(this.clientId, this.password)
+      .subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.router.navigate(['/accounts']);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.isLoading = false;
 
-        if (err.status === 401) {
-          this.errorMessage = 'Credenciales inválidas. Por favor, verifica tu ID de cliente y contraseña.';
-        } else if (err.status === 0) {
-          this.errorMessage = 'Error de conexión. No se pudo contactar con el servidor.';
-        } else if (err.status === 404) {
-          this.errorMessage = 'Servicio de autenticación no encontrado.';
-        } else {
-          this.errorMessage = err.error?.message || 'Ocurrió un error inesperado. Intente más tarde.';
+          // Extraer mensaje del backend según la estructura observada
+          let backendMessage = '';
+          if (err.error) {
+            backendMessage = err.error.detail || err.error.message || (typeof err.error === 'string' ? err.error : '');
+          }
+
+          if (err.status === 401) {
+            this.errorMessage = backendMessage || 'Credenciales inválidas';
+          } else if (err.status === 0) {
+            this.errorMessage = 'Error de red: No se pudo conectar con el servidor';
+          } else {
+            this.errorMessage = backendMessage || `Error ${err.status}: Intente nuevamente`;
+          }
+
+          // Forzar la detección de cambios para asegurar que el mensaje se muestre y el botón se habilite
+          this.cdRef.detectChanges();
         }
-      }
-    });
+      });
   }
 }

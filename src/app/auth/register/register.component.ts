@@ -151,7 +151,6 @@ export class RegisterComponent {
         }, 2000);
       },
       error: (err: any) => {
-        console.error('Error al registrar', err);
         this.errorMessage = err.error?.message || 'Error al crear la cuenta. Intente nuevamente.';
         this.isLoading = false;
       }
