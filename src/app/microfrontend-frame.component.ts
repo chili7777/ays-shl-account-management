@@ -69,7 +69,13 @@ export class MicrofrontendFrameComponent {
 
   mfeName = '';
   mfeLabel = '';
-  readonly remoteUrl: SafeResourceUrl | null = this.getSafeUrl();
+  remoteUrl: SafeResourceUrl | null = null;
+
+  constructor() {
+    this.route.queryParams.subscribe(() => {
+      this.remoteUrl = this.getSafeUrl();
+    });
+  }
 
   private getSafeUrl(): SafeResourceUrl | null {
     const config = this.route.snapshot.data['mfe'] as MicrofrontendConfig | undefined;
@@ -82,6 +88,11 @@ export class MicrofrontendFrameComponent {
       return null;
     }
 
-    return this.sanitizer.bypassSecurityTrustResourceUrl(config.remoteUrl);
+    // Propagar query params al iframe
+    const queryParams = this.route.snapshot.queryParams;
+    const queryString = new URLSearchParams(queryParams).toString();
+    const finalUrl = queryString ? `${config.remoteUrl}?${queryString}` : config.remoteUrl;
+
+    return this.sanitizer.bypassSecurityTrustResourceUrl(finalUrl);
   }
 }

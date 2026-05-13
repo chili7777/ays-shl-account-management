@@ -32,7 +32,15 @@ export class LoginComponent {
       .subscribe({
         next: () => {
           this.isLoading = false;
-          this.router.navigate(['/accounts']);
+          const role = this.authService.getUserRole();
+          const clientId = this.authService.getClientId();
+
+          if (role === 'ADMIN') {
+            this.router.navigate(['/clients']);
+          } else {
+            // Si no es ADMIN, redirigir a cuentas filtradas por cliente
+            this.router.navigate(['/accounts'], { queryParams: { clientId } });
+          }
         },
         error: (err: HttpErrorResponse) => {
           this.isLoading = false;

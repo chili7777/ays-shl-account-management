@@ -12,6 +12,7 @@
       <nav class="sidebar__nav">
         @for (mfe of mfes; track mfe.name) {
           <a [routerLink]="['/' + mfe.routePath]"
+             [queryParams]="getQueryParams(mfe)"
              routerLinkActive="active"
              class="sidebar__link"
              (click)="closeSidebar()">

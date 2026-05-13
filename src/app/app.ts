@@ -34,4 +34,12 @@ export class App {
   closeSidebar() {
     this.isSidebarOpen.set(false);
   }
+
+  getQueryParams(mfe: any) {
+    const role = this.authService.userRole();
+    if (mfe.routePath === 'accounts' && role !== 'ADMIN') {
+      return { clientId: this.authService.getClientId() };
+    }
+    return {};
+  }
 }

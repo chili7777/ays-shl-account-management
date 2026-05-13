@@ -3,6 +3,7 @@
   <nav class="footer__mobile-nav">
     @for (mfe of mfes; track mfe.name) {
       <a [routerLink]="['/' + mfe.routePath]"
+         [queryParams]="getQueryParams(mfe)"
          routerLinkActive="active"
          class="footer__nav-link">
         <span class="material-icons">{{ mfe.icon }}</span>

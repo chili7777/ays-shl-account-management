@@ -5,6 +5,8 @@ import { MICROFRONTENDS } from './microfrontend.config';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { authGuard } from './shared/guards/auth.guard';
+import { adminGuard } from './shared/guards/admin.guard';
+import { accountsGuard } from './shared/guards/accounts.guard';
 
 export const routes: Routes = [
   {
@@ -28,6 +30,9 @@ export const routes: Routes = [
         path: mfe.routePath,
         component: MicrofrontendFrameComponent,
         data: { mfe },
+        canActivate: mfe.routePath === 'clients'
+          ? [adminGuard]
+          : (mfe.routePath === 'accounts' ? [accountsGuard] : [])
       }))
     ]
   },

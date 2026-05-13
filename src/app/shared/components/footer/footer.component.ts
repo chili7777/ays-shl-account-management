@@ -1,7 +1,8 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { MicrofrontendConfig } from "../../../microfrontend.config";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: "app-footer",
@@ -13,4 +14,13 @@ import { MicrofrontendConfig } from "../../../microfrontend.config";
 export class FooterComponent {
   @Input() mfes: MicrofrontendConfig[] = [];
   now: Date = new Date();
+  private authService = inject(AuthService);
+
+  getQueryParams(mfe: MicrofrontendConfig) {
+    const role = this.authService.getUserRole();
+    if (mfe.routePath === 'accounts' && role !== 'ADMIN') {
+      return { clientId: this.authService.getClientId() };
+    }
+    return {};
+  }
 }
