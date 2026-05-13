@@ -12,7 +12,7 @@ import { AuthService } from "../../services/auth.service";
 export class HeaderComponent {
   private authService = inject(AuthService);
 
-  username: string = this.authService.getClientId() || "Usuario";
+  username: string = this.authService.getUserName() || "Usuario";
   @Output() toggleSidebar = new EventEmitter<void>();
 
   logoutAccount() {

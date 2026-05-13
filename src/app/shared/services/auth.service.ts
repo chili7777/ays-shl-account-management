@@ -32,8 +32,11 @@ export class AuthService {
     // Según requerimiento: "El Login debe llamar al backend para validar si los datos coinciden"
     return this.http.post(`${this.apiUrl}/login`, { identification: clientId, password }, { headers: this.getHeaders(true) })
       .pipe(
-        tap(() => {
+        tap((response: any) => {
           localStorage.setItem('clientId', clientId);
+          if (response && (response.name || response.fullName)) {
+            localStorage.setItem('userName', response.name || response.fullName);
+          }
           this._isLoggedIn.set(true);
         })
       );
@@ -45,6 +48,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('clientId');
+    localStorage.removeItem('userName');
     this._isLoggedIn.set(false);
   }
 
@@ -54,5 +58,9 @@ export class AuthService {
 
   getClientId(): string | null {
     return localStorage.getItem('clientId');
+  }
+
+  getUserName(): string | null {
+    return localStorage.getItem('userName');
   }
 }

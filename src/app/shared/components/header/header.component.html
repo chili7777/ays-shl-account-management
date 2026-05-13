@@ -15,7 +15,7 @@
     <div class="header__profile">
       <span class="header__username">{{ username }}</span>
       <div class="avatar">
-        {{ username.charAt(0) }}
+        {{ username.trim().charAt(0).toUpperCase() }}
       </div>
     </div>
 
