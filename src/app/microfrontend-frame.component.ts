@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { MicrofrontendConfig } from './microfrontend.config';
+import { AuthService } from './shared/services/auth.service';
 
 @Component({
   selector: 'app-microfrontend-frame',
@@ -66,6 +67,7 @@ import { MicrofrontendConfig } from './microfrontend.config';
 export class MicrofrontendFrameComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly sanitizer = inject(DomSanitizer);
+  private readonly authService = inject(AuthService);
 
   mfeName = '';
   mfeLabel = '';
@@ -88,8 +90,16 @@ export class MicrofrontendFrameComponent {
       return null;
     }
 
-    // Propagar query params al iframe
-    const queryParams = this.route.snapshot.queryParams;
+    // Propagar query params al iframe, incluyendo info de sesión
+    const queryParams = { ...this.route.snapshot.queryParams };
+
+    // Añadimos el rol y el clientId automáticamente si existen
+    const role = this.authService.getUserRole();
+    const clientId = this.authService.getClientId();
+
+    if (role) queryParams['role'] = role;
+    if (clientId) queryParams['clientId'] = clientId;
+
     const queryString = new URLSearchParams(queryParams).toString();
     const internalPath = config.internalPath || '';
     const baseUrl = config.remoteUrl + internalPath;
