@@ -13,6 +13,7 @@ export class HeaderComponent {
   private authService = inject(AuthService);
 
   username: string = this.authService.getUserName() || "Usuario";
+  userRole: string = this.authService.userRole() || "USER";
   @Output() toggleSidebar = new EventEmitter<void>();
 
   logoutAccount() {

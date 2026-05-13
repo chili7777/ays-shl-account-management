@@ -13,7 +13,10 @@
 
   <div class="header__right">
     <div class="header__profile">
-      <span class="header__username">{{ username }}</span>
+      <div class="header__info">
+        <span class="header__username">{{ username }}</span>
+        <span class="header__role">{{ userRole }}</span>
+      </div>
       <div class="avatar">
         {{ username.trim().charAt(0).toUpperCase() }}
       </div>
