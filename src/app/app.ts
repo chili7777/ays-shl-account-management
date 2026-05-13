@@ -1,5 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal, HostListener } from '@angular/core';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
@@ -15,8 +15,19 @@ import { AuthService } from './shared/services/auth.service';
 })
 export class App {
   private authService = inject(AuthService);
+  private router = inject(Router);
   isLoggedIn = this.authService.isLoggedIn;
   isSidebarOpen = signal(false);
+
+  @HostListener('window:message', ['$event'])
+  onMessage(event: MessageEvent) {
+    const { type, payload } = event.data || {};
+    if (type === 'MFE_NAVIGATE') {
+      const { path, queryParams } = payload;
+      console.log('[Shell] Recibida solicitud de navegación:', { path, queryParams });
+      this.router.navigate([path], { queryParams });
+    }
+  }
 
   get mfes() {
     const role = (this.authService.userRole() || 'USER').toString().toUpperCase();
