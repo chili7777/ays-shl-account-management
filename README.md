@@ -56,6 +56,43 @@ Este proyecto utiliza una arquitectura de **Microfrontends** basada en **Iframes
 
 ---
 
+## 📦 Ecosistema de Repositorios
+
+Este proyecto forma parte de un ecosistema distribuido. A continuación se detallan los repositorios relacionados:
+
+### Microfrontends (MFA)
+*   **[ays-shl-account-management](https://github.com/chili7777/ays-shl-account-management):** (Este repositorio) Aplicación Shell que orquesta los microfrontends y gestiona la autenticación.
+*   **[ays-mfa-customer](https://github.com/chili7777/ays-mfa-customer):** Microfrontend encargado de la gestión y visualización de datos de clientes.
+*   **[ays-mfa-account](https://github.com/chili7777/ays-mfa-account):** Microfrontend dedicado a la administración de cuentas bancarias.
+*   **[ays-mfa-movements](https://github.com/chili7777/ays-mfa-movements):** Microfrontend para la consulta y gestión de movimientos financieros.
+
+### Microservicios (MSA)
+*   **[ays-msa-dm-cuaa-cr-account](https://github.com/chili7777/ays-msa-dm-cuaa-cr-account):** Microservicio para la gestión de dominios y operaciones de cuentas.
+*   **[ays-msa-dm-pain-cr-movement](https://github.com/chili7777/ays-msa-dm-pain-cr-movement):** Microservicio encargado del procesamiento y registro de movimientos/transacciones.
+
+### Configuración y Guías
+*   **[ays-custom-instructions](https://github.com/chili7777/ays-custom-instructions):** Repositorio con instrucciones personalizadas y guías de estandarización para el desarrollo del proyecto.
+
+---
+
+## 🔐 Credenciales de Acceso (Pruebas)
+
+Para probar las diferentes funcionalidades y niveles de acceso en la plataforma, puede utilizar los siguientes usuarios:
+
+### Perfil Administrativo (BackOffice)
+*   **Usuario:** `0103322228`
+*   **Contraseña:** `asdfghjk`
+
+### Perfil Usuario (App de Transferencias)
+*   **Opción 1:**
+    *   **Usuario:** `1718048232`
+    *   **Contraseña:** `qwertyui`
+*   **Opción 2:**
+    *   **Usuario:** `1718048315`
+    *   **Contraseña:** `zxcvbnmq`
+
+---
+
 ## 📁 Estructura del Proyecto
 - `src/app/auth/`: Lógica de Login y Registro (3 pasos).
 - `src/app/shared/`: Componentes comunes (Header, Footer), Servicios (Auth) y Guards.
