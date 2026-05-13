@@ -1,0 +1,133 @@
+$theme-dark-bg: #0b0e11;
+$theme-dark-surface: #1e2329;
+$theme-dark-text-primary: #eaecef;
+$theme-dark-text-secondary: #848e9c;
+$theme-dark-accent: #005ce6;
+$theme-dark-border: rgba(43, 49, 57, 0.5);
+$theme-dark-error: #d41020;
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: $theme-dark-bg;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.login-card {
+  background-color: $theme-dark-surface;
+  padding: 40px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.login-header {
+  margin-bottom: 30px;
+  text-align: center;
+
+  h1 {
+    color: $theme-dark-text-primary;
+    font-size: 24px;
+    margin-bottom: 8px;
+    margin-top: 0;
+  }
+
+  p {
+    color: $theme-dark-text-secondary;
+    font-size: 14px;
+  }
+}
+
+.form-group {
+  margin-bottom: 24px;
+
+  label {
+    display: block;
+    color: $theme-dark-text-secondary;
+    font-size: 12px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid $theme-dark-border;
+  border-radius: 0;
+  color: $theme-dark-text-primary;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-bottom-color: $theme-dark-accent;
+    background: rgba(30, 35, 41, 0.3);
+  }
+
+  &::placeholder {
+    color: rgba(132, 142, 156, 0.5);
+  }
+}
+
+.error-message {
+  color: $theme-dark-error;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background-color: $theme-dark-accent;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.3s;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+}
+
+.login-footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 14px;
+
+  span {
+    color: $theme-dark-text-secondary;
+    margin-right: 8px;
+  }
+
+  a {
+    color: $theme-dark-accent;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

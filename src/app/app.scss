@@ -1,4 +1,4 @@
-@import "../assets/scss/variables";
+@use "../assets/scss/variables" as *;
 
 :host {
   display: block;
@@ -114,6 +114,12 @@
 @media (min-width: 1025px) {
   .main-wrapper {
     padding-left: 260px;
+  }
+}
+
+.app-container.not-logged-in {
+  .main-wrapper {
+    padding-left: 0 !important;
   }
 }
 

@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { MICROFRONTENDS } from './microfrontend.config';
+import { AuthService } from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,9 @@ import { MICROFRONTENDS } from './microfrontend.config';
   styleUrl: './app.scss'
 })
 export class App {
+  private authService = inject(AuthService);
+  isLoggedIn = this.authService.isLoggedIn;
+
   mfes = MICROFRONTENDS;
   isSidebarOpen = signal(false);
 

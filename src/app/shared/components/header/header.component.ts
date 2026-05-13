@@ -1,5 +1,6 @@
-import { Component, Input, EventEmitter, Output } from "@angular/core";
+import { Component, inject, EventEmitter, Output } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: "app-header",
@@ -9,14 +10,14 @@ import { CommonModule } from "@angular/common";
   imports: [CommonModule],
 })
 export class HeaderComponent {
-  @Input() username: string = "Usuario Genérico";
+  private authService = inject(AuthService);
+
+  username: string = this.authService.getClientId() || "Usuario";
   @Output() toggleSidebar = new EventEmitter<void>();
 
-  isLoggedIn: boolean = true; // Simulado para visualización
-
   logoutAccount() {
-    this.isLoggedIn = false;
-    console.log("Sesión cerrada");
+    this.authService.logout();
+    window.location.reload();
   }
 
   onToggleSidebar() {
