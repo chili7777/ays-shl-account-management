@@ -14,6 +14,7 @@ export interface MicrofrontendConfig {
   remoteUrl: string;
   icon: string;
   label: string;
+  internalPath?: string;
 }
 
 const config = window.__APP_CONFIG__;

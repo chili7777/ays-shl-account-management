@@ -12,7 +12,7 @@
   </div>
 
   <div class="header__right">
-    <div class="header__profile">
+    <div class="header__profile" (click)="goToProfile()" style="cursor: pointer;" title="Ir a mi perfil">
       <div class="header__info">
         <span class="header__username">{{ username }}</span>
         <span class="header__role">{{ userRole }}</span>

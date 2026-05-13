@@ -91,7 +91,9 @@ export class MicrofrontendFrameComponent {
     // Propagar query params al iframe
     const queryParams = this.route.snapshot.queryParams;
     const queryString = new URLSearchParams(queryParams).toString();
-    const finalUrl = queryString ? `${config.remoteUrl}?${queryString}` : config.remoteUrl;
+    const internalPath = config.internalPath || '';
+    const baseUrl = config.remoteUrl + internalPath;
+    const finalUrl = queryString ? `${baseUrl}?${queryString}` : baseUrl;
 
     return this.sanitizer.bypassSecurityTrustResourceUrl(finalUrl);
   }

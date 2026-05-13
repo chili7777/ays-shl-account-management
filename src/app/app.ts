@@ -26,7 +26,12 @@ export class App {
 
     return MICROFRONTENDS.map(mfe => {
       if (mfe.routePath === 'clients') {
-        return { ...mfe, label: 'Mi Perfil' };
+        const clientId = this.authService.getClientId();
+        return {
+          ...mfe,
+          label: 'Mi Perfil',
+          internalPath: role !== 'ADMIN' && clientId ? `/customers/detail/${clientId}` : ''
+        };
       }
       return mfe;
     });
@@ -45,7 +50,7 @@ export class App {
     if (role !== 'ADMIN') {
       const clientId = this.authService.getClientId();
       if (mfe.routePath === 'accounts' || mfe.routePath === 'clients' || mfe.routePath === 'movements') {
-        return { client: clientId };
+        return { clientId: clientId };
       }
     }
     return {};

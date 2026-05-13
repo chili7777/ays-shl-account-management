@@ -30,9 +30,7 @@ export const routes: Routes = [
         path: mfe.routePath,
         component: MicrofrontendFrameComponent,
         data: { mfe },
-        canActivate: mfe.routePath === 'clients'
-          ? [adminGuard]
-          : (mfe.routePath === 'accounts' ? [accountsGuard] : [])
+        canActivate: mfe.routePath === 'accounts' ? [accountsGuard] : []
       }))
     ]
   },
