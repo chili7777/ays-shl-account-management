@@ -46,13 +46,6 @@ export class App {
   }
 
   getQueryParams(mfe: any) {
-    const role = (this.authService.userRole() || 'USER').toString().toUpperCase();
-    if (role !== 'ADMIN') {
-      const clientId = this.authService.getClientId();
-      if (mfe.routePath === 'accounts' || mfe.routePath === 'clients' || mfe.routePath === 'movements') {
-        return { clientId: clientId };
-      }
-    }
     return {};
   }
 }

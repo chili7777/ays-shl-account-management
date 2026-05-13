@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -12,11 +12,13 @@ import { AuthService } from './shared/services/auth.service';
     <section class="mfe-container">
       @if (remoteUrl) {
         <iframe
+          #mfeFrame
           class="mfe-frame"
           [src]="remoteUrl"
           [title]="mfeName"
           loading="lazy"
           referrerpolicy="strict-origin-when-cross-origin"
+          (load)="onFrameLoad()"
         ></iframe>
       } @else {
         <div class="mfe-error">
@@ -69,9 +71,12 @@ export class MicrofrontendFrameComponent {
   private readonly sanitizer = inject(DomSanitizer);
   private readonly authService = inject(AuthService);
 
+  @ViewChild('mfeFrame') mfeFrame?: ElementRef<HTMLIFrameElement>;
+
   mfeName = '';
   mfeLabel = '';
   remoteUrl: SafeResourceUrl | null = null;
+  private currentConfig?: MicrofrontendConfig;
 
   constructor() {
     this.route.queryParams.subscribe(() => {
@@ -79,10 +84,42 @@ export class MicrofrontendFrameComponent {
     });
   }
 
+  @HostListener('window:message', ['$event'])
+  onMessage(event: MessageEvent) {
+    // Escuchar handshake de los MFE
+    if (event.data?.type === 'MFE_READY') {
+      console.log(`[Shell] MFE ${this.mfeName} reportó listo. Re-enviando datos.`);
+      this.sendSessionData();
+    }
+  }
+
+  onFrameLoad() {
+    console.log(`[Shell] Iframe ${this.mfeName} cargado. Enviando datos iniciales.`);
+    this.sendSessionData();
+  }
+
+  private sendSessionData() {
+    if (!this.mfeFrame?.nativeElement.contentWindow || !this.currentConfig?.remoteUrl) return;
+
+    const sessionData = {
+      type: 'SHELL_SESSION_DATA',
+      payload: {
+        role: this.authService.getUserRole(),
+        clientId: this.authService.getClientId(),
+        userName: this.authService.getUserName()
+      }
+    };
+
+    // Usamos el remoteUrl como targetOrigin para mayor seguridad
+    const targetOrigin = new URL(this.currentConfig.remoteUrl).origin;
+    this.mfeFrame.nativeElement.contentWindow.postMessage(sessionData, targetOrigin);
+  }
+
   private getSafeUrl(): SafeResourceUrl | null {
     const config = this.route.snapshot.data['mfe'] as MicrofrontendConfig | undefined;
     if (!config) return null;
 
+    this.currentConfig = config;
     this.mfeName = config.name;
     this.mfeLabel = config.label;
 
@@ -90,15 +127,12 @@ export class MicrofrontendFrameComponent {
       return null;
     }
 
-    // Propagar query params al iframe, incluyendo info de sesión
+    // Ya no propagamos datos sensibles por URL, solo queryParams de navegación si existen
     const queryParams = { ...this.route.snapshot.queryParams };
 
-    // Añadimos el rol y el clientId automáticamente si existen
-    const role = this.authService.getUserRole();
-    const clientId = this.authService.getClientId();
-
-    if (role) queryParams['role'] = role;
-    if (clientId) queryParams['clientId'] = clientId;
+    // Eliminamos explícitamente clientId y role si venían en la URL de la Shell
+    delete queryParams['clientId'];
+    delete queryParams['role'];
 
     const queryString = new URLSearchParams(queryParams).toString();
     const internalPath = config.internalPath || '';

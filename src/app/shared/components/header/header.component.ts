@@ -19,13 +19,7 @@ export class HeaderComponent {
   @Output() toggleSidebar = new EventEmitter<void>();
 
   goToProfile() {
-    const role = (this.authService.getUserRole() || 'USER').toString().toUpperCase();
-    if (role !== 'ADMIN') {
-      const clientId = this.authService.getClientId();
-      this.router.navigate(['/clients'], { queryParams: { clientId } });
-    } else {
-      this.router.navigate(['/clients']);
-    }
+    this.router.navigate(['/clients']);
   }
 
   logoutAccount() {

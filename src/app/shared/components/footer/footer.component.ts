@@ -17,13 +17,6 @@ export class FooterComponent {
   private authService = inject(AuthService);
 
   getQueryParams(mfe: MicrofrontendConfig) {
-    const role = (this.authService.getUserRole() || 'USER').toString().toUpperCase();
-    if (role !== 'ADMIN') {
-      const clientId = this.authService.getClientId();
-      if (mfe.routePath === 'accounts' || mfe.routePath === 'clients' || mfe.routePath === 'movements') {
-        return { clientId: clientId };
-      }
-    }
     return {};
   }
 }
