@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { trigger, transition, style, animate, query, group } from '@angular/animations';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -9,7 +10,57 @@ import { AuthService } from '../../shared/services/auth.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
+  animations: [
+    trigger('stepAnimation', [
+      transition(':increment', [
+        style({ position: 'relative', overflow: 'hidden' }),
+        query(':enter, :leave', [
+          style({
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            opacity: 1
+          })
+        ], { optional: true }),
+        query(':enter', [
+          style({ left: '100%', opacity: 0 })
+        ], { optional: true }),
+        group([
+          query(':leave', [
+            animate('400ms cubic-bezier(0.35, 0, 0.25, 1)', style({ left: '-100%', opacity: 0 }))
+          ], { optional: true }),
+          query(':enter', [
+            animate('400ms cubic-bezier(0.35, 0, 0.25, 1)', style({ left: '0%', opacity: 1 }))
+          ], { optional: true })
+        ])
+      ]),
+      transition(':decrement', [
+        style({ position: 'relative', overflow: 'hidden' }),
+        query(':enter, :leave', [
+          style({
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            opacity: 1
+          })
+        ], { optional: true }),
+        query(':enter', [
+          style({ left: '-100%', opacity: 0 })
+        ], { optional: true }),
+        group([
+          query(':leave', [
+            animate('400ms cubic-bezier(0.35, 0, 0.25, 1)', style({ left: '100%', opacity: 0 }))
+          ], { optional: true }),
+          query(':enter', [
+            animate('400ms cubic-bezier(0.35, 0, 0.25, 1)', style({ left: '0%', opacity: 1 }))
+          ], { optional: true })
+        ])
+      ])
+    ])
+  ]
 })
 export class RegisterComponent {
   private readonly fb = inject(FormBuilder);
@@ -17,6 +68,7 @@ export class RegisterComponent {
   private readonly authService = inject(AuthService);
 
   registerForm: FormGroup;
+  currentStep = 1;
   isLoading = false;
   successMessage = '';
   errorMessage = '';
@@ -34,6 +86,52 @@ export class RegisterComponent {
       role: ['USER'],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+  }
+
+  nextStep(): void {
+    if (this.isStepValid()) {
+      if (this.currentStep < 3) {
+        this.currentStep++;
+      }
+    } else {
+      this.markStepAsTouched();
+    }
+  }
+
+  prevStep(): void {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  }
+
+  isStepValid(): boolean {
+    if (this.currentStep === 1) {
+      return (
+        (this.registerForm.get('name')?.valid ?? false) &&
+        (this.registerForm.get('identification')?.valid ?? false) &&
+        (this.registerForm.get('gender')?.valid ?? false) &&
+        (this.registerForm.get('age')?.valid ?? false)
+      );
+    } else if (this.currentStep === 2) {
+      return (
+        (this.registerForm.get('email')?.valid ?? false) &&
+        (this.registerForm.get('phone')?.valid ?? false) &&
+        (this.registerForm.get('address')?.valid ?? false)
+      );
+    }
+    return this.registerForm.valid;
+  }
+
+  markStepAsTouched(): void {
+    let fields: string[] = [];
+    if (this.currentStep === 1) {
+      fields = ['name', 'identification', 'gender', 'age'];
+    } else if (this.currentStep === 2) {
+      fields = ['email', 'phone', 'address'];
+    } else if (this.currentStep === 3) {
+      fields = ['password'];
+    }
+    fields.forEach(field => this.registerForm.get(field)?.markAsTouched());
   }
 
   onSubmit(): void {
