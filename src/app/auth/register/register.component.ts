@@ -84,6 +84,7 @@ export class RegisterComponent {
       gender: ['MALE', [Validators.required]],
       age: [18, [Validators.required, Validators.min(18), Validators.max(120)]],
       status: [true],
+      role: ['USER'],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }

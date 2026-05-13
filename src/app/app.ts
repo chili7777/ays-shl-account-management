@@ -16,9 +16,16 @@ import { AuthService } from './shared/services/auth.service';
 export class App {
   private authService = inject(AuthService);
   isLoggedIn = this.authService.isLoggedIn;
-
-  mfes = MICROFRONTENDS;
   isSidebarOpen = signal(false);
+
+  get mfes() {
+    const role = this.authService.userRole();
+    if (role === 'ADMIN') {
+      return MICROFRONTENDS;
+    }
+    // Por defecto para USER o si no hay rol, ocultar Clientes
+    return MICROFRONTENDS.filter(mfe => mfe.routePath !== 'clients');
+  }
 
   toggleSidebar() {
     this.isSidebarOpen.update(v => !v);

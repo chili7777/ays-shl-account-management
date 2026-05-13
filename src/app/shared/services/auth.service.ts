@@ -10,9 +10,14 @@ export class AuthService {
   private readonly apiUrl = 'https://ays-msa-dm-cuaa-cr-account-stagi-zdpms.ondigitalocean.app/customers';
 
   private _isLoggedIn = signal<boolean>(this.checkSession());
+  private _userRole = signal<string | null>(localStorage.getItem('userRole'));
 
   get isLoggedIn() {
     return this._isLoggedIn.asReadonly();
+  }
+
+  get userRole() {
+    return this._userRole.asReadonly();
   }
 
   private getHeaders(isJson = false): HttpHeaders {
@@ -35,6 +40,10 @@ export class AuthService {
           if (response && (response.name || response.fullName)) {
             localStorage.setItem('userName', response.name || response.fullName);
           }
+          if (response && response.role) {
+            localStorage.setItem('userRole', response.role);
+            this._userRole.set(response.role);
+          }
           this._isLoggedIn.set(true);
         }),
         catchError(err => {
@@ -50,7 +59,9 @@ export class AuthService {
   logout() {
     localStorage.removeItem('clientId');
     localStorage.removeItem('userName');
+    localStorage.removeItem('userRole');
     this._isLoggedIn.set(false);
+    this._userRole.set(null);
   }
 
   private checkSession(): boolean {
@@ -63,5 +74,9 @@ export class AuthService {
 
   getUserName(): string | null {
     return localStorage.getItem('userName');
+  }
+
+  getUserRole(): string | null {
+    return localStorage.getItem('userRole');
   }
 }
