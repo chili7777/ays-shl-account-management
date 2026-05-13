@@ -31,9 +31,18 @@ export class LoginComponent {
         this.router.navigate(['/accounts']);
       },
       error: (err) => {
-        console.error(err);
-        this.errorMessage = 'Usuario o contraseña incorrectos';
+        console.error('Error de autenticación:', err);
         this.isLoading = false;
+
+        if (err.status === 401) {
+          this.errorMessage = 'Credenciales inválidas. Por favor, verifica tu ID de cliente y contraseña.';
+        } else if (err.status === 0) {
+          this.errorMessage = 'Error de conexión. No se pudo contactar con el servidor.';
+        } else if (err.status === 404) {
+          this.errorMessage = 'Servicio de autenticación no encontrado.';
+        } else {
+          this.errorMessage = err.error?.message || 'Ocurrió un error inesperado. Intente más tarde.';
+        }
       }
     });
   }
